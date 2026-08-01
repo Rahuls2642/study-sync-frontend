@@ -29,7 +29,7 @@ export const WeeklyChart = ({ data }) => {
   }
 
   return (
-    <div className="bg-white p-6 rounded-xl border border-gray-100 shadow-sm col-span-1 lg:col-span-2">
+    <div className="bg-white p-6 rounded-xl border border-gray-100 shadow-sm h-fit">
       <h2 className="text-lg font-bold text-gray-900 mb-6">Weekly Activity</h2>
       <div className="h-64">
         <ResponsiveContainer width="100%" height="100%">

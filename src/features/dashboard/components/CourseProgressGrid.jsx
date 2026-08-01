@@ -21,7 +21,7 @@ export const CourseProgressGrid = ({ courses, userName }) => {
   }
 
   return (
-    <div className="bg-white p-6 rounded-xl border border-gray-100 shadow-sm mt-6">
+    <div className="bg-white p-6 rounded-xl border border-gray-100 shadow-sm">
       <div className="flex justify-between items-center mb-6">
         <h2 className="text-lg font-bold text-gray-900">Course Progress</h2>
       </div>

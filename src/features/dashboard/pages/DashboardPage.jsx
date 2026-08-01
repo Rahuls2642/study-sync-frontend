@@ -62,7 +62,10 @@ export const DashboardPage = () => {
       <StatsBar overall={data?.overall} today={data?.today} isEmpty={false} />
       
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 mb-8">
-        <WeeklyChart data={data?.weeklyActivity} />
+        <div className="col-span-1 lg:col-span-2 flex flex-col space-y-6">
+          <WeeklyChart data={data?.weeklyActivity} />
+          <CourseProgressGrid courses={data?.courses} userName={data?.user?.name} />
+        </div>
         
         <div className="col-span-1 flex flex-col space-y-6">
           <div className="flex-1">
@@ -73,8 +76,6 @@ export const DashboardPage = () => {
           </div>
         </div>
       </div>
-
-      <CourseProgressGrid courses={data?.courses} userName={data?.user?.name} />
     </div>
   );
 };
