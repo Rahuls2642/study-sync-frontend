@@ -6,6 +6,7 @@ import { RegisterPage } from './features/auth/pages/RegisterPage';
 import { LoginPage } from './features/auth/pages/LoginPage';
 
 import { DashboardPage } from './features/dashboard/pages/DashboardPage';
+import { CoursesPage } from './features/courses/pages/CoursesPage';
 
 import { AppLayout } from './components/layout/AppLayout';
 
@@ -24,6 +25,7 @@ function App() {
             <AppLayout userName="Rahul">
               <Routes>
                 <Route path="dashboard" element={<DashboardPage />} />
+                <Route path="courses" element={<CoursesPage />} />
                 {/* Fallback for other /app routes */}
                 <Route path="*" element={<DashboardPage />} />
               </Routes>
