@@ -1,4 +1,5 @@
 import React from "react";
+import { Link } from "react-router-dom";
 import { Bell } from "lucide-react";
 
 export const TopHeader = ({ userName }) => {
@@ -16,9 +17,11 @@ export const TopHeader = ({ userName }) => {
           <Bell className="w-5 h-5" />
           <span className="absolute top-1.5 right-1.5 w-1.5 h-1.5 bg-gray-900 rounded-full"></span>
         </button>
-        <div className="w-10 h-10 rounded-full bg-gray-100 text-gray-900 font-semibold flex items-center justify-center cursor-pointer hover:bg-gray-200 transition-colors border border-gray-200">
-          {(userName || "S")[0].toUpperCase()}
-        </div>
+        <Link to="/app/profile">
+          <div className="w-10 h-10 rounded-full bg-gray-100 text-gray-900 font-semibold flex items-center justify-center cursor-pointer hover:bg-gray-200 transition-colors border border-gray-200">
+            {(userName || "S")[0].toUpperCase()}
+          </div>
+        </Link>
       </div>
     </header>
   );

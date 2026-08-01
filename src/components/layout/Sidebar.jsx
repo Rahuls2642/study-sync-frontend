@@ -3,8 +3,8 @@ import { Link, useLocation } from "react-router-dom";
 import { 
   LayoutDashboard, 
   BookOpen, 
-  Sparkles, 
-  TrendingUp, 
+  Sun, 
+  ClipboardList, 
   Calendar, 
   Lightbulb, 
   Settings,
@@ -38,8 +38,8 @@ export const Sidebar = () => {
   const mainNav = [
     { icon: LayoutDashboard, label: "Dashboard", path: "/app/dashboard" },
     { icon: BookOpen, label: "Courses", path: "/app/courses" },
-    { icon: Sparkles, label: "AI Planner", path: "/app/planner" },
-    { icon: TrendingUp, label: "Progress", path: "/app/progress" },
+    { icon: Sun, label: "Today's Study", path: "/app/today" },
+    { icon: ClipboardList, label: "Assessments", path: "/app/assessments" },
     { icon: Calendar, label: "Calendar", path: "/app/calendar" },
     { icon: Lightbulb, label: "Insights", path: "/app/insights" },
   ];

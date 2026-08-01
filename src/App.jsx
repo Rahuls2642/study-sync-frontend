@@ -8,6 +8,10 @@ import { LoginPage } from './features/auth/pages/LoginPage';
 import { DashboardPage } from './features/dashboard/pages/DashboardPage';
 import { CoursesPage } from './features/courses/pages/CoursesPage';
 import { CourseWorkspace } from './features/workspace/pages/CourseWorkspace';
+import { TodayPage } from './features/study/pages/TodayPage';
+import { AssessmentsPage } from './features/assessments/pages/AssessmentsPage';
+import { ProfilePage } from './features/profile/pages/ProfilePage';
+import { SettingsPage } from './features/settings/pages/SettingsPage';
 
 import { AppLayout } from './components/layout/AppLayout';
 
@@ -28,6 +32,10 @@ function App() {
                 <Route path="dashboard" element={<DashboardPage />} />
                 <Route path="courses" element={<CoursesPage />} />
                 <Route path="courses/:courseId" element={<CourseWorkspace />} />
+                <Route path="today" element={<TodayPage />} />
+                <Route path="assessments" element={<AssessmentsPage />} />
+                <Route path="profile" element={<ProfilePage />} />
+                <Route path="settings" element={<SettingsPage />} />
                 {/* Fallback for other /app routes */}
                 <Route path="*" element={<DashboardPage />} />
               </Routes>

@@ -55,7 +55,7 @@ export const workspaceApi = {
   
   updateTopicProgress: async ({ topicId, progress }) => {
     const response = await api.patch(`/topics/${topicId}/progress`, {
-      progress
+      completed: progress === 100
     });
     return response.data;
   }
