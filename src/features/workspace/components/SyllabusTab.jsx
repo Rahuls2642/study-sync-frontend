@@ -93,6 +93,12 @@ export const SyllabusTab = ({ course, onNavigate }) => {
       delete payload.examDate;
     }
 
+    // Ensure session duration doesn't exceed daily goal
+    const dailyGoalMinutes = (payload.hoursPerDay * 60) + payload.minutesPerDay;
+    if (dailyGoalMinutes > 0) {
+      payload.sessionMinutes = Math.min(payload.sessionMinutes, dailyGoalMinutes);
+    }
+
     // 1. Save preferences
     savePreferencesMutation.mutate(
       payload,

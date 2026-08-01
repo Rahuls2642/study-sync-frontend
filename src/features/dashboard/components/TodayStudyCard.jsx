@@ -32,9 +32,12 @@ export const TodayStudyCard = ({ studyPlan }) => {
           >
             <div>
               <p className="text-xs font-semibold text-indigo-600 mb-1">{session.courseName}</p>
-              <h4 className="text-sm font-medium text-gray-900 mb-1">{session.topicName}</h4>
+              <h4 className="text-sm font-medium text-gray-900 mb-1">
+                {session.topicTitle || session.topicName} 
+                {session.totalParts > 1 ? ` (Part ${session.part} of ${session.totalParts})` : ''}
+              </h4>
               <p className="text-xs text-gray-500 flex items-center">
-                <Clock className="w-3 h-3 mr-1" /> {session.estimatedMinutes} mins
+                <Clock className="w-3 h-3 mr-1" /> {session.duration || session.estimatedMinutes} mins
               </p>
             </div>
             <button className={`p-2 rounded-full transition-colors ${

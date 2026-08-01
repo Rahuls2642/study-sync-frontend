@@ -129,9 +129,14 @@ export const StudyPlanTab = ({ course }) => {
       }
     }
 
+    let topicName = s.topic?.title || s.topicTitle || "Unknown Topic";
+    if (s.totalParts > 1) {
+      topicName += ` (Part ${s.part} of ${s.totalParts})`;
+    }
+
     return {
       id: s.id,
-      topicName: s.topic?.title || "Unknown Topic",
+      topicName,
       duration: s.estimatedMinutes,
       date: displayDate,
       status: s.status ? s.status.toLowerCase() : "pending",
