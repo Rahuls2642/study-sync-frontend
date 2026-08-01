@@ -14,7 +14,7 @@ export const DashboardHero = () => {
           Let's set up your first curriculum. Our AI will analyze your syllabus and generate a personalized schedule tailored exactly to your goals.
         </p>
         <Link
-          to="/courses/new"
+          to="/app/courses"
           className="inline-flex items-center px-6 py-3 bg-[#4F46E5] text-white font-medium rounded-lg hover:bg-[#4338CA] transition-colors"
         >
           <Plus className="w-5 h-5 mr-2" />
@@ -34,7 +34,7 @@ export const DashboardHero = () => {
               <p className="text-xs text-gray-500">Introduction to Calculus</p>
             </div>
           </div>
-          
+
           <div className="space-y-4">
             <div className="flex items-start">
               <CheckCircle2 className="w-5 h-5 text-gray-300 mr-3 mt-0.5" />
@@ -62,7 +62,7 @@ export const DashboardHero = () => {
             </div>
           </div>
         </div>
-        
+
         {/* Subtle decorative background elements */}
         <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-64 h-64 bg-[#4F46E5] opacity-20 blur-3xl rounded-full -z-10"></div>
       </div>

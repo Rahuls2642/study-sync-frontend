@@ -18,10 +18,12 @@ export const SyllabusTab = ({ course, onNavigate }) => {
   // Study Preferences State
   const [preferences, setPreferences] = useState({
     hoursPerDay: 2,
+    minutesPerDay: 0,
     sessionMinutes: 60,
     breakMinutes: 10,
     studyDays: [1, 2, 3, 4, 5], // default Mon-Fri
-    startDate: new Date().toISOString()
+    startDate: new Date().toISOString(),
+    examDate: ""
   });
 
   const toggleStudyDay = (dayIndex) => {
@@ -83,9 +85,17 @@ export const SyllabusTab = ({ course, onNavigate }) => {
   };
 
   const handleGenerate = () => {
+    setCurrentStep(3); // Show loading immediately
+    
+    // Convert empty string examDate to undefined/null for backend
+    const payload = { ...preferences };
+    if (!payload.examDate) {
+      delete payload.examDate;
+    }
+
     // 1. Save preferences
     savePreferencesMutation.mutate(
-      preferences,
+      payload,
       {
         onSuccess: () => {
           // 2. Generate Plan
@@ -93,13 +103,20 @@ export const SyllabusTab = ({ course, onNavigate }) => {
             { courseId: course.id || course._id },
             {
               onSuccess: () => {
-                setCurrentStep(3);
                 setTimeout(() => {
                   onNavigate("study-plan");
                 }, 1500);
+              },
+              onError: (err) => {
+                setCurrentStep(2);
+                alert(err.response?.data?.message || "Failed to generate plan. Please try again.");
               }
             }
           );
+        },
+        onError: (err) => {
+          setCurrentStep(2);
+          alert(err.response?.data?.message || "Failed to save preferences. Please try again.");
         }
       }
     );
@@ -213,19 +230,42 @@ export const SyllabusTab = ({ course, onNavigate }) => {
               </div>
               
               <div>
-                <label className="block text-sm font-medium text-gray-900 mb-2">Daily Goal (Hours): {preferences.hoursPerDay}h</label>
-                <input 
-                  type="range" 
-                  min="1" 
-                  max="8" 
-                  value={preferences.hoursPerDay}
-                  onChange={(e) => setPreferences(prev => ({ ...prev, hoursPerDay: parseInt(e.target.value) }))}
-                  className="w-full h-2 bg-gray-200 rounded-lg appearance-none cursor-pointer accent-gray-900" 
-                />
-                <div className="flex justify-between text-xs text-gray-500 mt-2">
-                  <span>Light (1h)</span>
-                  <span>Intense (8h)</span>
+                <label className="block text-sm font-medium text-gray-900 mb-2">Daily Goal</label>
+                <div className="flex gap-4">
+                  <div className="flex-1">
+                    <label className="block text-xs text-gray-500 mb-1">Hours</label>
+                    <input 
+                      type="number" 
+                      min="0" 
+                      max="24" 
+                      value={preferences.hoursPerDay}
+                      onChange={(e) => setPreferences(prev => ({ ...prev, hoursPerDay: parseInt(e.target.value) || 0 }))}
+                      className="w-full px-3 py-2 bg-gray-50 border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#4F46E5] focus:bg-white transition-all text-gray-900" 
+                    />
+                  </div>
+                  <div className="flex-1">
+                    <label className="block text-xs text-gray-500 mb-1">Minutes</label>
+                    <input 
+                      type="number" 
+                      min="0" 
+                      max="59" 
+                      value={preferences.minutesPerDay}
+                      onChange={(e) => setPreferences(prev => ({ ...prev, minutesPerDay: parseInt(e.target.value) || 0 }))}
+                      className="w-full px-3 py-2 bg-gray-50 border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#4F46E5] focus:bg-white transition-all text-gray-900" 
+                    />
+                  </div>
                 </div>
+              </div>
+              
+              <div>
+                <label className="block text-sm font-medium text-gray-900 mb-2">Exam Date (Optional)</label>
+                <input 
+                  type="date" 
+                  value={preferences.examDate}
+                  onChange={(e) => setPreferences(prev => ({ ...prev, examDate: e.target.value }))}
+                  className="w-full px-3 py-2 bg-gray-50 border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#4F46E5] focus:bg-white transition-all text-gray-900" 
+                />
+                <p className="text-xs text-gray-500 mt-2">If provided, your study sessions will be scheduled before this date.</p>
               </div>
             </div>
 
