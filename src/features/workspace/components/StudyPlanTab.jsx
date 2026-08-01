@@ -5,17 +5,30 @@ import { useStudyPlan, useUpdateSessionStatus } from "../hooks/useWorkspace";
 const SessionCard = ({ session, onUpdateStatus }) => {
   const isCompleted = session.status === "completed";
   const isSkipped = session.status === "skipped";
+  const isInProgress = session.status === "in_progress";
   
   return (
     <div className={`flex flex-col sm:flex-row sm:items-center justify-between p-4 md:p-5 border rounded-xl mb-4 transition-colors ${
       isCompleted ? "bg-green-50/30 border-green-100" :
       isSkipped ? "bg-gray-50 border-gray-100 opacity-70" :
+      isInProgress ? "bg-indigo-50/40 border-indigo-200 shadow-md ring-1 ring-indigo-100" :
       "bg-white border-gray-200 hover:border-gray-300 shadow-sm"
     }`}>
       <div className="mb-4 sm:mb-0 pr-4">
-        <h4 className={`text-base font-bold mb-1 ${isCompleted ? 'text-gray-600 line-through' : 'text-gray-900'}`}>
-          {session.topicName}
-        </h4>
+        <div className="flex items-center space-x-3 mb-1">
+          <h4 className={`text-base font-bold ${
+            isCompleted ? 'text-gray-600 line-through' : 
+            isInProgress ? 'text-indigo-900' : 'text-gray-900'
+          }`}>
+            {session.topicName}
+          </h4>
+          {isInProgress && (
+            <span className="flex items-center px-2 py-0.5 bg-indigo-100 text-indigo-700 text-[10px] uppercase font-bold rounded-full tracking-wider animate-pulse">
+              <span className="w-1.5 h-1.5 rounded-full bg-indigo-500 mr-1.5"></span>
+              Active Now
+            </span>
+          )}
+        </div>
         <div className="flex items-center space-x-4 text-xs font-medium text-gray-500">
           <span className="flex items-center">
             <Clock className="w-3.5 h-3.5 mr-1" />
@@ -29,13 +42,13 @@ const SessionCard = ({ session, onUpdateStatus }) => {
       </div>
       
       <div className="flex items-center space-x-2 shrink-0">
-        {!isCompleted && !isSkipped && (
+        {session.status === "pending" && (
           <>
             <button 
-              onClick={() => onUpdateStatus(session.id, "completed")}
-              className="px-3 py-1.5 bg-gray-900 text-white text-xs font-semibold rounded-md hover:bg-gray-800 transition-colors flex items-center"
+              onClick={() => onUpdateStatus(session.id, "in_progress")}
+              className="px-3 py-1.5 bg-[#4F46E5] text-white text-xs font-semibold rounded-md hover:bg-[#4338CA] transition-colors flex items-center"
             >
-              <Check className="w-3.5 h-3.5 mr-1.5" /> Complete
+              <Play className="w-3.5 h-3.5 mr-1.5" /> Start
             </button>
             <button 
               onClick={() => onUpdateStatus(session.id, "skipped")}
@@ -44,6 +57,14 @@ const SessionCard = ({ session, onUpdateStatus }) => {
               <SkipForward className="w-3.5 h-3.5 mr-1.5" /> Skip
             </button>
           </>
+        )}
+        {session.status === "in_progress" && (
+          <button 
+            onClick={() => onUpdateStatus(session.id, "completed")}
+            className="px-4 py-1.5 bg-gray-900 text-white text-xs font-semibold rounded-md hover:bg-gray-800 transition-colors flex items-center ring-2 ring-gray-900 ring-offset-2"
+          >
+            <Check className="w-3.5 h-3.5 mr-1.5" /> Finish Session
+          </button>
         )}
         {isCompleted && (
           <span className="px-3 py-1.5 bg-green-100 text-green-700 text-xs font-bold rounded-md flex items-center">
@@ -122,8 +143,8 @@ export const StudyPlanTab = ({ course }) => {
     updateStatus({ planId: sessionId, status });
   };
 
-  const todaySessions = sessions.filter(s => s.date === "Today" && s.status !== "completed");
-  const upcomingSessions = sessions.filter(s => s.date !== "Today" && s.status === "pending");
+  const todaySessions = sessions.filter(s => s.date === "Today" && (s.status === "pending" || s.status === "in_progress"));
+  const upcomingSessions = sessions.filter(s => s.date !== "Today" && (s.status === "pending" || s.status === "in_progress"));
   const completedSessions = sessions.filter(s => s.status === "completed" || s.status === "skipped");
 
   return (

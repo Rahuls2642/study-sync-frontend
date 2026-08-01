@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { useParams, useNavigate } from "react-router-dom";
-import { useCourseDetails } from "../hooks/useWorkspace";
+import { useCourseDetails, useCourseProgress } from "../hooks/useWorkspace";
 import { CourseHeader } from "../components/CourseHeader";
 import { CourseTabs } from "../components/CourseTabs";
 import { OverviewTab } from "../components/OverviewTab";
@@ -14,7 +14,10 @@ export const CourseWorkspace = () => {
   const navigate = useNavigate();
   const [activeTab, setActiveTab] = useState("overview");
 
-  const { data: response, isLoading, isError, refetch } = useCourseDetails(courseId);
+  const { data: response, isLoading: isCourseLoading, isError } = useCourseDetails(courseId);
+  const { data: progressResponse, isLoading: isProgressLoading } = useCourseProgress(courseId);
+
+  const isLoading = isCourseLoading || isProgressLoading;
 
   if (isLoading) {
     return (
@@ -46,7 +49,10 @@ export const CourseWorkspace = () => {
     );
   }
 
-  const course = response.data;
+  const course = {
+    ...response.data,
+    progress: progressResponse?.data?.completionPercentage || 0,
+  };
 
   return (
     <div className="py-4 animate-in fade-in duration-500">

@@ -3,7 +3,8 @@ import { CheckCircle2, Circle, AlertCircle } from "lucide-react";
 import { useCourseProgress, useUpdateTopicProgress } from "../hooks/useWorkspace";
 
 const TopicRow = ({ topic, onUpdateProgress }) => {
-  const isCompleted = topic.progress === 100;
+  // Support both a numeric progress or a boolean completed flag
+  const isCompleted = topic.progress === 100 || topic.completed === true;
   
   return (
     <div className={`flex flex-col sm:flex-row sm:items-center justify-between p-4 border-b border-gray-100 last:border-0 hover:bg-gray-50 transition-colors ${isCompleted ? 'bg-gray-50/50' : ''}`}>
@@ -30,10 +31,10 @@ const TopicRow = ({ topic, onUpdateProgress }) => {
         <div className="flex-1 w-full bg-gray-200 rounded-full h-2">
           <div
             className={`h-2 rounded-full transition-all duration-500 ${isCompleted ? 'bg-green-500' : 'bg-gray-900'}`}
-            style={{ width: `${topic.progress || 0}%` }}
+            style={{ width: `${isCompleted ? 100 : (topic.progress || 0)}%` }}
           ></div>
         </div>
-        <span className="text-xs font-bold text-gray-900 w-10 text-right">{topic.progress || 0}%</span>
+        <span className="text-xs font-bold text-gray-900 w-10 text-right">{isCompleted ? 100 : (topic.progress || 0)}%</span>
       </div>
     </div>
   );
@@ -56,8 +57,9 @@ export const ProgressTab = ({ course }) => {
     );
   }
 
-  // Assuming response.data contains the topics array
-  const topics = response?.data?.topics || response?.data || [];
+  // We now fetch topics enriched with progress data from the progress API, 
+  // but fallback to course.topics if not yet available
+  const topics = response?.data?.topics || course?.topics || [];
 
   if (topics.length === 0) {
     return (
@@ -75,7 +77,7 @@ export const ProgressTab = ({ course }) => {
     updateTopic({ topicId, progress });
   };
 
-  const completedCount = topics.filter(t => t.progress === 100).length;
+  const completedCount = topics.filter(t => t.progress === 100 || t.completed === true).length;
   const totalCount = topics.length;
   const overallProgress = totalCount === 0 ? 0 : Math.round((completedCount / totalCount) * 100);
 
