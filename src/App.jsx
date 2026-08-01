@@ -7,6 +7,7 @@ import { LoginPage } from './features/auth/pages/LoginPage';
 
 import { DashboardPage } from './features/dashboard/pages/DashboardPage';
 import { CoursesPage } from './features/courses/pages/CoursesPage';
+import { CourseWorkspace } from './features/workspace/pages/CourseWorkspace';
 
 import { AppLayout } from './components/layout/AppLayout';
 
@@ -26,6 +27,7 @@ function App() {
               <Routes>
                 <Route path="dashboard" element={<DashboardPage />} />
                 <Route path="courses" element={<CoursesPage />} />
+                <Route path="courses/:courseId" element={<CourseWorkspace />} />
                 {/* Fallback for other /app routes */}
                 <Route path="*" element={<DashboardPage />} />
               </Routes>
