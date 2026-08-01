@@ -10,12 +10,12 @@ export const useLogin = () => {
       const response = await api.post("/auth/login", credentials);
       return response.data;
     },
-    onSuccess: (data) => {
-      if (data.accessToken) {
-        localStorage.setItem("accessToken", data.accessToken);
+    onSuccess: (responseData) => {
+      if (responseData.data?.accessToken) {
+        localStorage.setItem("accessToken", responseData.data.accessToken);
       }
-      if (data.refreshToken) {
-        localStorage.setItem("refreshToken", data.refreshToken);
+      if (responseData.data?.refreshToken) {
+        localStorage.setItem("refreshToken", responseData.data.refreshToken);
       }
       navigate("/app/dashboard");
     },

@@ -5,8 +5,9 @@ import { Toaster } from 'sonner';
 import { RegisterPage } from './features/auth/pages/RegisterPage';
 import { LoginPage } from './features/auth/pages/LoginPage';
 
-// Placeholder for Dashboard
-const DashboardPage = () => <div className="p-8 text-center">Dashboard Page</div>;
+import { DashboardPage } from './features/dashboard/pages/DashboardPage';
+
+import { AppLayout } from './components/layout/AppLayout';
 
 const queryClient = new QueryClient();
 
@@ -16,10 +17,18 @@ function App() {
       <Toaster position="top-center" richColors />
       <Router>
         <Routes>
-          <Route path="/" element={<Navigate to="/register" replace />} />
           <Route path="/register" element={<RegisterPage />} />
           <Route path="/login" element={<LoginPage />} />
-          <Route path="/app/dashboard" element={<DashboardPage />} />
+          <Route path="/" element={<Navigate to="/login" replace />} />
+          <Route path="/app/*" element={
+            <AppLayout userName="Rahul">
+              <Routes>
+                <Route path="dashboard" element={<DashboardPage />} />
+                {/* Fallback for other /app routes */}
+                <Route path="*" element={<DashboardPage />} />
+              </Routes>
+            </AppLayout>
+          } />
         </Routes>
       </Router>
     </QueryClientProvider>
